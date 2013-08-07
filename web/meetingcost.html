@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MeetingCost</title>
+    <link rel="stylesheet" href="meetingcost.css">
+  </head>
+  <body>
+    <h1>MeetingCost</h1>
+
+    <div>
+      <div>
+      Current cost is {{totalCost}}, Cost per hour is {{costPerHour}}
+      </div>
+
+      <div>
+        <input id="to-do-input" type="text" placeholder="Add ratecard value per person..."/>
+      </div>
+
+      <div>
+        <ul id="to-do-list">
+        </ul>
+      </div>
+
+      <div>
+        <button id="startbutton">Start</button>
+        <button id="stopbutton">Stop</button>
+        <button id="resetbutton">Reset</button>
+      </div>
+    </div>
+
+    <button id="delete-all" type="button" style="float:right"> Delete All </button>
+
+    <script type="application/dart" src="meetingcost.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>
