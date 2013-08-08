@@ -15,20 +15,27 @@
       </div>
 
       <div>
-        <input id="to-do-input" type="text" placeholder="Add ratecard value per person..."/>
-      </div>
+        <select id="roles-list">
+          <option value="1500">Creative Director</option>
+          <option value="1500">Account Director</option>
+          <option value="1500">Planning Director</option>
+          <option value="900">Account Manager</option>
+          <option value="900">Developer</option>
+        </select>
+       </div>
+       <button id="addbutton">Add attendee</button>
+       </div>
 
-      <div>
-        <ul id="to-do-list">
+       <div>
+        <ul id="attendees">
         </ul>
-      </div>
+       </div>
 
-      <div>
+       <div>
         <button id="startbutton">Start</button>
         <button id="stopbutton">Stop</button>
         <button id="resetbutton">Reset</button>
-      </div>
-    </div>
+       </div>
 
     <button id="delete-all" type="button" style="float:right"> Delete All </button>
 

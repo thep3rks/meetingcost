@@ -10,18 +10,37 @@ double hoursPerDay = 7.5 ;
 int secondsPerHour = 3600;
 
 Stopwatch myWatch ;
+ButtonElement addButton;
 ButtonElement stopButton;
 ButtonElement startButton;
 ButtonElement resetButton;
 ButtonElement deleteAll;
-InputElement toDoInput;
-UListElement toDoList;
+UListElement attendees;
 List people ;
 double costPerSecond ;
+SelectElement rolesSelect ;
+
+List roles = [ ] ;
+
+class Person
+{
+  String title ;
+  int chargeoutCost ;
+  LIElement personElement ;
+
+  Person( this.title, this.chargeoutCost )
+  {
+    this.personElement = new LIElement();
+    this.personElement.text = rolesSelect.selectedOptions[0].text;
+  }
+}
 
 void main()
 {
   myWatch = new Stopwatch();
+
+  addButton = query("#addbutton");
+  addButton.onClick.listen( ( e ) => addPerson( ) ) ;
 
   startButton = query("#startbutton");
   startButton.onClick.listen( ( e ) => startwatch( ) ) ;
@@ -34,35 +53,70 @@ void main()
   resetButton.onClick.listen( ( e ) => resetwatch( ) ) ;
   resetButton.disabled = true;
 
-  toDoList = query('#to-do-list');
-
-  toDoInput = query('#to-do-input');
-  toDoInput.onChange.listen(addPerson);
+  attendees = query('#attendees');
 
   deleteAll = query('#delete-all');
   deleteAll.onClick.listen((e) => removeAllPeople( ) );
 
+  rolesSelect = query("#roles-list");
+
+  //createRolesList( ) ;
+
   people = [ ] ;
 }
 
+/*
+void createRolesList( )
+{
+  Person cd = new Person( "Creative Director", 1500 ) ;
+  roles.add( cd ) ;
+
+  cd = new Person( "Account Director", 1000 ) ;
+  roles.add( cd ) ;
+
+  cd = new Person( "Planning Director", 1500 ) ;
+  roles.add( cd ) ;
+
+  rolesSelect = new SelectElement( ) ;
+
+  var options = [ ] ;
+
+  for( var i = 0; i < roles.length; i++)
+  {
+    Person role = roles[ i ] ;
+
+    OptionElement test = new OptionElement() ;
+    test.value = role.title ;
+    test.text = role.title ;
+
+    options.add( test ) ;
+  }
+
+  rolesSelect.options.addAll( options ) ;
+
+  DivElement rolesList = query('#roles-list') ;
+  rolesList.children.add( rolesSelect ) ;
+}
+*/
+
 // Rate calculator
 
-void addPerson(Event e)
+void addPerson( )
 {
-  var newPerson = new LIElement();
-  newPerson.text = toDoInput.value;
-  newPerson.onClick.listen((e) => removePerson( newPerson ) );
-  toDoInput.value = '';
-  toDoList.children.add( newPerson );
+  if( people == null ) people = [ ] ;
 
-  people.add( newPerson ) ;
+  Person p = new Person( rolesSelect.selectedOptions[0].text, int.parse(rolesSelect.selectedOptions[0].value) ) ;
+
+  people.add( p ) ;
+  attendees.children.add( p.personElement );
+  p.personElement.onClick.listen((e) => removePerson( p ) );
 
   calculateCosts() ;
 }
 
-void removePerson( person )
+void removePerson( Person person )
 {
-  toDoList.children.remove( person ) ;
+  attendees.children.remove( person.personElement ) ;
   people.remove( person ) ;
 
   calculateCosts() ;
@@ -70,7 +124,7 @@ void removePerson( person )
 
 void removeAllPeople( )
 {
-  toDoList.children.clear( ) ;
+  attendees.children.clear( ) ;
   people = [ ] ;
 
   calculateCosts( ) ;
@@ -80,9 +134,9 @@ void calculateCosts( )
 {
   var costPerDay = 0 ;
 
-  for( LIElement person in people )
+  for( Person person in people )
   {
-    costPerDay = costPerDay += int.parse(person.text) ;
+    costPerDay = costPerDay += person.chargeoutCost ;
   }
 
   print( "costPerDay: $costPerDay" ) ;
