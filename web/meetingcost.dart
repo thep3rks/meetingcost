@@ -1,7 +1,9 @@
 import 'dart:html';
 import 'dart:async';
-import 'dart:math';
 import 'package:web_ui/web_ui.dart';
+
+import 'actors.dart';
+// import 'stopwatch.dart';
 
 @observable String totalCost = '£0';
 @observable String costPerHour = '£0';
@@ -21,19 +23,6 @@ double costPerSecond ;
 SelectElement rolesSelect ;
 
 List roles = [ ] ;
-
-class Person
-{
-  String title ;
-  int chargeoutCost ;
-  LIElement personElement ;
-
-  Person( this.title, this.chargeoutCost )
-  {
-    this.personElement = new LIElement();
-    this.personElement.text = rolesSelect.selectedOptions[0].text;
-  }
-}
 
 void main()
 {
@@ -60,46 +49,8 @@ void main()
 
   rolesSelect = query("#roles-list");
 
-  //createRolesList( ) ;
-
   people = [ ] ;
 }
-
-/*
-void createRolesList( )
-{
-  Person cd = new Person( "Creative Director", 1500 ) ;
-  roles.add( cd ) ;
-
-  cd = new Person( "Account Director", 1000 ) ;
-  roles.add( cd ) ;
-
-  cd = new Person( "Planning Director", 1500 ) ;
-  roles.add( cd ) ;
-
-  rolesSelect = new SelectElement( ) ;
-
-  var options = [ ] ;
-
-  for( var i = 0; i < roles.length; i++)
-  {
-    Person role = roles[ i ] ;
-
-    OptionElement test = new OptionElement() ;
-    test.value = role.title ;
-    test.text = role.title ;
-
-    options.add( test ) ;
-  }
-
-  rolesSelect.options.addAll( options ) ;
-
-  DivElement rolesList = query('#roles-list') ;
-  rolesList.children.add( rolesSelect ) ;
-}
-*/
-
-// Rate calculator
 
 void addPerson( )
 {
@@ -135,23 +86,17 @@ void calculateCosts( )
   var costPerDay = 0 ;
 
   for( Person person in people )
-  {
     costPerDay = costPerDay += person.chargeoutCost ;
-  }
-
-  print( "costPerDay: $costPerDay" ) ;
 
   var cph = (costPerDay / hoursPerDay).round() ;
-
   costPerHour = "£$cph" ;
-
   costPerSecond = cph / secondsPerHour ;
 
+  print( "costPerDay: $costPerDay" ) ;
   print( "costPerSecond is $costPerSecond" ) ;
 }
 
 // Stopwatch stuff
-
 void startwatch( )
 {
   myWatch.start();
@@ -182,7 +127,7 @@ void updateCost(Timer _)
 {
   var s = myWatch.elapsedMilliseconds~/1000 ;
 
-  double costSoFar = ( ( costPerSecond * s) * 100 ).round() / 100 ;
+  double costSoFar = ( ( costPerSecond * s ) * 100 ).round() / 100 ;
 
   totalCost = "£$costSoFar" ;
 }
